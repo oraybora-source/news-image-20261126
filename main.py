@@ -18,6 +18,9 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     src = os.path.join(HERE, "entry.png")
     dst = os.path.join(out_dir, "entry.png")
+    # Fail loudly (instead of a bare FileNotFoundError) if the image is missing.
+    if not os.path.exists(src):
+        raise SystemExit(f"entry.png not found beside main.py: {src}")
     shutil.copyfile(src, dst)
     os.chmod(dst, 0o644)
 
