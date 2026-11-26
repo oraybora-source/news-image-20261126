@@ -1,16 +1,18 @@
-"""Program entry V2 ni26 — penyalin-saja.
+"""Program entry V3 ni26 — penyalin-saja.
 
-Menyalin entry.png yang sudah jadi (dibangun di sesi build oleh compose.py)
-ke folder keluaran penilai. Pustaka standar saja (os, shutil, sys): tanpa
-PIL, tanpa font sistem, tanpa jaringan, tanpa pemeriksaan hash sendiri.
+Menyalin entry.png yang sudah jadi (dibangun di sesi build oleh
+compose.py) ke folder keluaran penilai. Pustaka standar saja (os,
+shutil, sys): tanpa PIL, tanpa font sistem, tanpa jaringan, tanpa
+pemeriksaan hash sendiri.
 
 Folder keluaran: MAKEFUN_OUTPUT_DIR bila disetel, kalau tidak /output.
-Izin hasil salinan: 0o644. Bila entry.png tidak ada, keluar dengan pesan
-galat yang jelas. Sebelum menyalin, isi entry.png diperiksa: harus
-berkas PNG yang tidak kosong (tanda tangan PNG 8 byte); berkas kosong
-atau bukan PNG ditolak dengan pesan galat sendiri, supaya penilai tidak
-menerima salinan rusak. Setelah menyalin, ukuran hasil dibandingkan
-dengan sumber; bila tidak sama, keluar dengan galat.
+Izin hasil salinan: 0o644. Bila entry.png tidak ada, keluar dengan
+pesan galat yang jelas. Sebelum menyalin, isi entry.png diperiksa:
+harus berkas PNG yang tidak kosong (tanda tangan PNG 8 byte);
+berkas kosong atau bukan PNG ditolak dengan pesan galat sendiri,
+supaya penilai tidak menerima salinan rusak. Setelah menyalin,
+ukuran hasil dibandingkan dengan sumber; bila tidak sama, keluar
+dengan galat.
 """
 import os
 import shutil
@@ -24,8 +26,10 @@ def main():
     here = os.path.dirname(os.path.abspath(__file__))
     src = os.path.join(here, ENTRY)
     if not os.path.isfile(src):
-        print("error: %s tidak ditemukan di %s; jalankan compose.py dulu "
-              "untuk membangun entry final" % (ENTRY, here), file=sys.stderr)
+        print("error: %s tidak ditemukan di direktori tempat main.py "
+              "berjalan (%s); bangun dulu entry final dengan perintah "
+              "'python3 compose.py' di direktori itu, lalu jalankan lagi "
+              "main.py" % (ENTRY, here), file=sys.stderr)
         sys.exit(1)
     try:
         with open(src, "rb") as fh:
