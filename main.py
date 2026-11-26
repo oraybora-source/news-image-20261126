@@ -1,4 +1,4 @@
-"""Program entry V3 ni26 — penyalin-saja.
+"""Program entry V3 ni26 — penyalin-saja (rebuild dari nol).
 
 Menyalin entry.png yang sudah jadi (dibangun di sesi build oleh
 compose.py) ke folder keluaran penilai. Pustaka standar saja (os,
@@ -26,10 +26,10 @@ def main():
     here = os.path.dirname(os.path.abspath(__file__))
     src = os.path.join(here, ENTRY)
     if not os.path.isfile(src):
-        print("error: %s tidak ditemukan di direktori tempat main.py "
-              "berjalan (%s); bangun dulu entry final dengan perintah "
-              "'python3 compose.py' di direktori itu, lalu jalankan lagi "
-              "main.py" % (ENTRY, here), file=sys.stderr)
+        print("error: %s tidak ditemukan (dicari di %s, direktori tempat "
+              "main.py berjalan); bangun dulu entry final dengan perintah "
+              "'cd %s && python3 compose.py', lalu jalankan lagi main.py"
+              % (ENTRY, src, here), file=sys.stderr)
         sys.exit(1)
     try:
         with open(src, "rb") as fh:
