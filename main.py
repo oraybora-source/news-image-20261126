@@ -1,9 +1,8 @@
-"""Program entry V3 ni26 — penyalin-saja (rebuild dari nol).
+"""Program entry — penyalin entry.png saja.
 
-Menyalin entry.png yang sudah jadi (dibangun di sesi build oleh
-compose.py) ke folder keluaran penilai. Pustaka standar saja (os,
-shutil, sys): tanpa PIL, tanpa font sistem, tanpa jaringan, tanpa
-pemeriksaan hash sendiri.
+Menyalin entry.png yang sudah jadi (dibangun dengan compose.py) ke
+folder keluaran penilai. Hanya pustaka standar: tanpa font, tanpa
+jaringan, tanpa pemeriksaan hash sendiri.
 
 Folder keluaran: MAKEFUN_OUTPUT_DIR bila disetel, kalau tidak /output.
 Izin hasil salinan: 0o644. Bila entry.png tidak ada, keluar dengan
@@ -41,7 +40,8 @@ def main():
     if head != PNG_SIGNATURE:
         print("error: %s bukan berkas PNG yang valid (tanda tangan PNG "
               "tidak cocok atau berkas kosong); bangun ulang entry dengan "
-              "compose.py" % src, file=sys.stderr)
+              "perintah 'cd %s && python3 compose.py', lalu jalankan lagi "
+              "main.py" % (src, here), file=sys.stderr)
         sys.exit(1)
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
     try:
