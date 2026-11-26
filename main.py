@@ -1,66 +1,74 @@
-"""Entry ni26 V3: salin entry.png yang sudah jadi ke folder keluaran.
+"""main.py — program entry V4 ni26. Ditulis baru di sesi ini.
 
-Hanya memakai pustaka standar, tanpa jaringan dan tanpa font.
-Cara build: pindah ke folder ini lalu jalankan compose.py.
+Hanya menyalin entry.png yang sudah jadi ke folder keluaran.
+Pustaka standar saja; tanpa jaringan, tanpa font.
 """
 
 import os
 import shutil
 import sys
 
-ENTRY_NAME = "entry.png"
-PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+NAMA_BERKAS = "entry.png"
+# Tanda tangan PNG: 137, 'PNG', CR, LF, 26, LF.
+TANDA_TANGAN_PNG = b"\x89PNG\r\n\x1a\n"
 
 
-def fail(message):
-    print("galat: " + message, file=sys.stderr)
+def gagal(pesan):
+    print(f"main.py: galat: {pesan}", file=sys.stderr)
     sys.exit(1)
 
 
-def main():
-    here = os.path.dirname(os.path.abspath(__file__))
-    source = os.path.join(here, ENTRY_NAME)
-    if not os.path.isfile(source):
-        fail(
-            "berkas %s tidak ditemukan di %s (folder %s). "
-            "Bangun dulu dengan perintah: cd %s && python3 compose.py"
-            % (ENTRY_NAME, source, here, here)
+def utama():
+    folder = os.path.dirname(os.path.abspath(__file__))
+    sumber = os.path.join(folder, NAMA_BERKAS)
+    if not os.path.isfile(sumber):
+        gagal(
+            f"berkas {NAMA_BERKAS} tidak ditemukan di {sumber} "
+            f"(folder main.py: {folder}). "
+            "Bangun dulu: pindah ke folder itu lalu jalankan "
+            "'python3 compose.py'."
         )
     try:
-        with open(source, "rb") as fh:
-            head = fh.read(8)
-    except OSError as exc:
-        fail("tidak bisa membaca %s: %s" % (source, exc))
-    if head != PNG_SIGNATURE:
-        found = "kosong" if not head else "0x" + head.hex()
-        fail(
-            "berkas %s bukan PNG yang sah "
-            "(8 byte pertama %s, bukan tanda tangan PNG 0x89504e470d0a1a0a)."
-            % (source, found)
+        with open(sumber, "rb") as f:
+            awal = f.read(8)
+    except OSError as e:
+        gagal(f"tidak bisa membaca {sumber}: {e}")
+    if awal != TANDA_TANGAN_PNG:
+        gagal(
+            f"{sumber} bukan berkas PNG yang sah "
+            "(8 byte pertama tidak cocok dengan tanda tangan PNG). "
+            "Bangun ulang dengan 'python3 compose.py'."
         )
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+    keluaran = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
     try:
-        os.makedirs(out_dir, exist_ok=True)
-    except OSError as exc:
-        fail("tidak bisa membuat folder keluaran %s: %s" % (out_dir, exc))
-    dest = os.path.join(out_dir, ENTRY_NAME)
+        os.makedirs(keluaran, exist_ok=True)
+    except OSError as e:
+        gagal(f"tidak bisa membuat folder keluaran {keluaran}: {e}")
+    tujuan = os.path.join(keluaran, NAMA_BERKAS)
     try:
-        shutil.copyfile(source, dest)
-        os.chmod(dest, 0o644)
-    except OSError as exc:
-        fail("tidak bisa menyalin %s ke %s: %s" % (source, dest, exc))
-    try:
-        src_size = os.path.getsize(source)
-        dst_size = os.path.getsize(dest)
-    except OSError as exc:
-        fail("tidak bisa memeriksa ukuran salinan %s: %s" % (dest, exc))
-    if src_size != dst_size:
-        fail(
-            "ukuran salinan %s (%d byte) tidak sama dengan sumber %s (%d byte)"
-            % (dest, dst_size, source, src_size)
+        shutil.copyfile(sumber, tujuan)
+        os.chmod(tujuan, 0o644)
+    except OSError as e:
+        gagal(f"tidak bisa menyalin {sumber} ke {tujuan}: {e}")
+    ukuran_sumber = os.path.getsize(sumber)
+    ukuran_tujuan = os.path.getsize(tujuan)
+    if ukuran_sumber != ukuran_tujuan:
+        gagal(
+            f"ukuran salinan {ukuran_tujuan} byte tidak sama dengan "
+            f"sumber {ukuran_sumber} byte."
         )
-    print("disalin %s -> %s (%d byte)" % (source, dest, dst_size))
+    try:
+        with open(tujuan, "rb") as f:
+            awal_tujuan = f.read(8)
+    except OSError as e:
+        gagal(f"tidak bisa membaca ulang salinan {tujuan}: {e}")
+    if awal_tujuan != TANDA_TANGAN_PNG:
+        gagal(
+            f"salinan {tujuan} rusak: 8 byte pertamanya tidak cocok "
+            "dengan tanda tangan PNG. Salin ulang."
+        )
+    print(f"main.py: disalin {sumber} -> {tujuan} ({ukuran_tujuan} byte)")
 
 
 if __name__ == "__main__":
-    main()
+    utama()
