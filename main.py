@@ -1,74 +1,46 @@
-"""main.py — program entry V4 ni26. Ditulis baru di sesi ini.
+#!/usr/bin/env python3
+"""Program entry V5 ni26 — ditulis baru di sesi build V5.
 
-Hanya menyalin entry.png yang sudah jadi ke folder keluaran.
-Pustaka standar saja; tanpa jaringan, tanpa font.
+Hanya menyalin entry.png yang sudah jadi ke folder keluaran penilai.
+Pustaka standar saja: tanpa jaringan, tanpa font, tanpa alat sistem.
+Hasilnya deterministik: byte yang disalin sama di setiap run.
 """
-
 import os
 import shutil
 import sys
 
-NAMA_BERKAS = "entry.png"
-# Tanda tangan PNG: 137, 'PNG', CR, LF, 26, LF.
-TANDA_TANGAN_PNG = b"\x89PNG\r\n\x1a\n"
+NAMA = "entry.png"
+# Delapan byte pertama sebuah PNG yang sah.
+AWALAN_PNG = b"\x89PNG\r\n\x1a\n"
 
 
-def gagal(pesan):
-    print(f"main.py: galat: {pesan}", file=sys.stderr)
-    sys.exit(1)
-
-
-def utama():
+def salin():
     folder = os.path.dirname(os.path.abspath(__file__))
-    sumber = os.path.join(folder, NAMA_BERKAS)
-    if not os.path.isfile(sumber):
-        gagal(
-            f"berkas {NAMA_BERKAS} tidak ditemukan di {sumber} "
-            f"(folder main.py: {folder}). "
-            "Bangun dulu: pindah ke folder itu lalu jalankan "
-            "'python3 compose.py'."
-        )
-    try:
-        with open(sumber, "rb") as f:
-            awal = f.read(8)
-    except OSError as e:
-        gagal(f"tidak bisa membaca {sumber}: {e}")
-    if awal != TANDA_TANGAN_PNG:
-        gagal(
-            f"{sumber} bukan berkas PNG yang sah "
-            "(8 byte pertama tidak cocok dengan tanda tangan PNG). "
-            "Bangun ulang dengan 'python3 compose.py'."
-        )
-    keluaran = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
-    try:
-        os.makedirs(keluaran, exist_ok=True)
-    except OSError as e:
-        gagal(f"tidak bisa membuat folder keluaran {keluaran}: {e}")
-    tujuan = os.path.join(keluaran, NAMA_BERKAS)
-    try:
-        shutil.copyfile(sumber, tujuan)
-        os.chmod(tujuan, 0o644)
-    except OSError as e:
-        gagal(f"tidak bisa menyalin {sumber} ke {tujuan}: {e}")
-    ukuran_sumber = os.path.getsize(sumber)
-    ukuran_tujuan = os.path.getsize(tujuan)
-    if ukuran_sumber != ukuran_tujuan:
-        gagal(
-            f"ukuran salinan {ukuran_tujuan} byte tidak sama dengan "
-            f"sumber {ukuran_sumber} byte."
-        )
-    try:
-        with open(tujuan, "rb") as f:
-            awal_tujuan = f.read(8)
-    except OSError as e:
-        gagal(f"tidak bisa membaca ulang salinan {tujuan}: {e}")
-    if awal_tujuan != TANDA_TANGAN_PNG:
-        gagal(
-            f"salinan {tujuan} rusak: 8 byte pertamanya tidak cocok "
-            "dengan tanda tangan PNG. Salin ulang."
-        )
-    print(f"main.py: disalin {sumber} -> {tujuan} ({ukuran_tujuan} byte)")
+    asal = os.path.join(folder, NAMA)
+    if not os.path.isfile(asal):
+        print(f"main.py: {NAMA} tidak ada di {folder}", file=sys.stderr)
+        return 1
+    with open(asal, "rb") as f:
+        kepala = f.read(8)
+    if kepala != AWALAN_PNG:
+        print(f"main.py: {asal} bukan PNG yang sah", file=sys.stderr)
+        return 1
+    tujuan_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
+    os.makedirs(tujuan_dir, exist_ok=True)
+    tujuan = os.path.join(tujuan_dir, NAMA)
+    shutil.copyfile(asal, tujuan)
+    os.chmod(tujuan, 0o644)
+    if os.path.getsize(tujuan) != os.path.getsize(asal):
+        print("main.py: ukuran salinan tidak sama dengan sumber", file=sys.stderr)
+        return 1
+    with open(tujuan, "rb") as f:
+        kepala_tujuan = f.read(8)
+    if kepala_tujuan != AWALAN_PNG:
+        print("main.py: salinan rusak (bukan PNG yang sah)", file=sys.stderr)
+        return 1
+    print(f"main.py: {asal} -> {tujuan} ({os.path.getsize(tujuan)} byte)")
+    return 0
 
 
 if __name__ == "__main__":
-    utama()
+    sys.exit(salin())
