@@ -1,17 +1,20 @@
 # The World in One Day — Thursday 26 November 2026
 
-Sum up 26 November's world news in one image: 30 stories across 6 regions
-on one newspaper page.
+Sum up 26 November's world news in one image: 12 stories across
+5 regions on one newspaper page (V9, uji skill Lapis 1 v6.8.1).
 
-- Masthead date, UTC timeline of the day, three illustrated lead stories
-  (Kuwait drone attack, US tariffs on 14 partners, EU summit fails),
-  eight illustrated cards, a 19-story list with sources, a world map with
-  11 numbered pins, and a date check naming what was left out and what is
-  not yet decided.
-- Every story happened or was first reported on Thursday 26 November 2026
-  (UTC). Status is marked per story: CONFIRMED, REPORTED, or CLAIM.
+- Masthead date, three illustrated lead stories (Kuwait drone attack,
+  Bangkok refinery blast, Guinea-Bissau delays its vote by 2 years),
+  a Thanksgiving storm band, six small cards, and an "Also today"
+  footer (Brazil inflation, ECB chief pick).
+- Every story happened or was first reported on Thursday 26 November
+  2026 (UTC). Stories first reported on 25 Nov (US tariffs, Cairo
+  fire, Ras Tanura claim, Kyiv strike, Macy's postponement decision)
+  were left out on purpose — see the build notes.
+- Status is marked per story: claims are labelled as claims
+  (Kuwait: Italy and Kuwait blame Iran, Iran denies it; Gaza: medics say).
 - Illustrations are flat geometric vector drawings made in code; no
-  photographs, no faces.
+  photographs, no faces, no text inside the illustrations.
 
 ## Run
 
@@ -20,5 +23,4 @@ on one newspaper page.
 
 ## Sources
 
-See `sumber.md` for the news sources per story and the licences of the
-map data (Natural Earth, public domain) and the fonts (DejaVu, free).
+See `sumber.md` for the news sources per story and the font licences.

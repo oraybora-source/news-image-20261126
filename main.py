@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Entry program: copy the pre-rendered image to the output directory.
+"""V9 entry program: copy the pre-rendered image to the output directory.
+Build: uji skill Lapis 1 v6.8.1, dari nol, 27 Nov 2026.
 
-The image (entry.png) is the finished front page, drawn by the build
-program in the build session. This program only copies it, so it runs
-identically twice, uses only the standard library, and needs no network,
-fonts, or binaries. Outside the grader's container, MAKEFUN_OUTPUT_DIR
-stands in for /output.
+The image (entry.png) is the finished front page for Thursday
+26 November 2026, drawn by the build program in the build session.
+This program only copies it, so it runs identically twice, uses only
+the standard library, and needs no network, fonts, or binaries.
+Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for
+/output.
 """
 import os
 import shutil
