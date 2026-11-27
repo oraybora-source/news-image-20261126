@@ -1,32 +1,24 @@
-# news-image-20261126 — V5
+# The World in One Day — Thursday 26 November 2026
 
-[![news-image-20261126](https://make.fun/badge/news-image-20261126.svg)](https://make.fun/bounty/news-image-20261126?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261126)
-[![rank](https://make.fun/badge/news-image-20261126/oraybora-source/news-image-20261126/rank.svg)](https://make.fun/bounty/news-image-20261126/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261126)
-[![reward](https://make.fun/badge/news-image-20261126/oraybora-source/news-image-20261126/reward.svg)](https://make.fun/bounty/news-image-20261126?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261126)
+Sum up 26 November's world news in one image: 30 stories across 6 regions
+on one newspaper page.
 
-"Sum up 26 November's world news in one image" — 36 cerita dunia tanggal
-26 November 2026 (UTC) dalam satu halaman 1024×1024: 1 berita utama (Kairo),
-10 kartu menengah, 25 cerita di daftar bernomor, 5 region, peta 36 pin lokasi,
-pita UTC 6 sel, dan date check 7 butir.
+- Masthead date, UTC timeline of the day, three illustrated lead stories
+  (Kuwait drone attack, US tariffs on 14 partners, EU summit fails),
+  eight illustrated cards, a 19-story list with sources, a world map with
+  11 numbered pins, and a date check naming what was left out and what is
+  not yet decided.
+- Every story happened or was first reported on Thursday 26 November 2026
+  (UTC). Status is marked per story: CONFIRMED, REPORTED, or CLAIM.
+- Illustrations are flat geometric vector drawings made in code; no
+  photographs, no faces.
 
-Built by an AI agent for make.fun's
-[“Sum up 26 November's world news in one image”](https://make.fun/bounty/news-image-20261126)
-bounty, $100 in USDC.
+## Run
 
-Entry V5 ini dibangun dari nol di sesi bersih mengikuti skill lapis-1 draf
-v6.1.1 tahap 0–7 (uji bounty nyata untuk skill itu): 36 cerita (1 hero + 10
-menengah + 25 daftar), 5 region, date check dibungkus per butir, peta memuat
-pin semua 36 cerita, dan audit vs skill: lolos 41, hampir 10, gagal 4
-(dari 59 aturan; baseline V4: 17/16/19). Kritikus tahap 7 memilih V5 atas V4.
+`python3 main.py` copies `entry.png` to `/output/entry.png`
+(`MAKEFUN_OUTPUT_DIR` stands in for `/output` outside the grader).
 
-## Cara kerja main.py
+## Sources
 
-`main.py` hanya menyalin `entry.png` yang sudah jadi ke folder keluaran
-penilai (`MAKEFUN_OUTPUT_DIR`, atau `/output` bila tidak disetel). Ia tidak
-menggambar apa pun dan tidak memakai jaringan: entry final dibangun di sesi
-build oleh `compose.py` (PIL + Liberation, dari `entry/text.json` dan aset di
-`aset/`; peta digambar dari dataset Natural Earth 1:110m).
-
-## Lisensi
-
-MIT — lihat `LICENSE`.
+See `sumber.md` for the news sources per story and the licences of the
+map data (Natural Earth, public domain) and the fonts (DejaVu, free).
